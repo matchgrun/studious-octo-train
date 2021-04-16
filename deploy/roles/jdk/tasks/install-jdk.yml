@@ -1,0 +1,63 @@
+---
+########################################################## {tag.top} ###
+## IBM Confidential
+## OCO Source Materials
+## *** siam-msv-core ***
+##
+## (C) Copyright IBM Corporation 2021
+##
+## The source code for this program is not published or otherwise
+## divested of its trade secrets, irrespective of what has been
+## deposited with the U.S. Copyright Office.
+########################################################## {tag.end} ###
+
+- debug:
+    msg: "jdk version = {{ jdk_version_full }}"
+
+- debug:
+    msg: "jdk home = {{ dir_jdk_install }}"
+
+- name: SIAM temp directory.
+  file:
+    path:  "{{ dir_siam_temp }}"
+    owner: "{{ siam_common_user }}"
+    group: "{{ siam_common_group }}"
+    mode:  "u=rwx,g=rwx,o=rx"
+    state: directory
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: JDK install directory.
+  file:
+    path:  "{{ dir_jdk_home }}"
+    owner: "{{ siam_common_user }}"
+    group: "{{ siam_common_group }}"
+    mode:  "u=rwx,g=rwx,o=rx"
+    state: directory
+  become: yes
+  become_user: "{{ siam_become_user }}"
+ 
+- name: Download jdk.
+  get_url:
+    url:   "{{ jdk_url_art_name }}"
+    dest:  "{{ dir_jdk_download }}/{{ jdk_filename }}"
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: Unpack JDK.
+  unarchive:
+    copy:    no
+    src:     "{{ dir_jdk_download }}/{{ jdk_filename }}"
+    dest:    "{{ dir_common_apps }}/jdk"
+    owner:   "{{ siam_common_user }}"
+    group:   "{{ siam_common_group }}"
+    creates: "{{ dir_jdk_install }}"
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+# ------------------------------------------------------------------------------
+# END OF SCRIPT.
+# ------------------------------------------------------------------------------
+#
+
+

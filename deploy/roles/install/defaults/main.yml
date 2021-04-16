@@ -1,0 +1,22 @@
+---
+########################################################## {tag.top} ###
+## IBM Confidential
+## OCO Source Materials
+## *** siam-msv-core ***
+##
+## (C) Copyright IBM Corporation 2021
+##
+## The source code for this program is not published or otherwise
+## divested of its trade secrets, irrespective of what has been
+## deposited with the U.S. Copyright Office.
+########################################################## {tag.end} ###
+
+app_name_file:  "{{ siam_app_name }}-{{ siam_app_version }}.jar"
+url_art_prefix: "{{ url_artifactory }}/{{ art_repo_release }}/{{ siam_app_art_path }}"
+url_dl_art:     "{{ url_art_prefix }}/{{ siam_app_name }}/{{ siam_app_version }}/{{ app_name_file }}"
+
+# ------------------------------------------------------------------------------
+# END OF SCRIPT.
+# ------------------------------------------------------------------------------
+#
+

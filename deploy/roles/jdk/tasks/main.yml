@@ -1,0 +1,33 @@
+---
+########################################################## {tag.top} ###
+## IBM Confidential
+## OCO Source Materials
+## *** siam-msv-core ***
+##
+## (C) Copyright IBM Corporation 2021
+##
+## The source code for this program is not published or otherwise
+## divested of its trade secrets, irrespective of what has been
+## deposited with the U.S. Copyright Office.
+########################################################## {tag.end} ###
+
+- debug:
+    msg: "jdk version = {{ jdk_version_full }}"
+
+- debug:
+    msg: "jdk home = {{ dir_jdk_install }}"
+
+- name: Check whether Java installed.
+  stat:
+    path: "{{ dir_jdk_install }}"
+  register: siam_java_installed
+
+- name: Install JDK.
+  include:  "install-jdk.yml"
+  when: siam_java_installed.stat.isdir is not defined
+
+# ------------------------------------------------------------------------------
+# END OF SCRIPT.
+# ------------------------------------------------------------------------------
+#
+

@@ -1,0 +1,28 @@
+---
+########################################################## {tag.top} ###
+## IBM Confidential
+## OCO Source Materials
+## *** siam-msv-core ***
+##
+## (C) Copyright IBM Corporation 2021
+##
+## The source code for this program is not published or otherwise
+## divested of its trade secrets, irrespective of what has been
+## deposited with the U.S. Copyright Office.
+########################################################## {tag.end} ###
+
+dir_jdk_download:   "{{ dir_siam_temp }}"
+dir_jdk_home:       "{{ dir_common_apps }}/jdk"
+jdk_filename:       "{{ jdk_name_base }}{{ jdk_suffix }}"
+dir_jdk_install:    "{{ dir_jdk_home }}/{{ jdk_name_base }}"
+
+jdk_url_prefix:     "{{ url_artifactory }}/{{ art_repo_local_lic }}/{{ jdk_artifact_path }}"
+jdk_url_art_name:   "{{ jdk_url_prefix }}/{{ jdk_version_full }}/{{ jdk_filename }}"
+
+path_bin_java:      "{{ dir_jdk_install }}/bin/java"
+
+# ------------------------------------------------------------------------------
+# END OF SCRIPT.
+# ------------------------------------------------------------------------------
+#
+

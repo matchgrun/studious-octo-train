@@ -1,0 +1,148 @@
+---
+########################################################## {tag.top} ###
+## IBM Confidential
+## OCO Source Materials
+## *** siam-msv-core ***
+##
+## (C) Copyright IBM Corporation 2021
+##
+## The source code for this program is not published or otherwise
+## divested of its trade secrets, irrespective of what has been
+## deposited with the U.S. Copyright Office.
+########################################################## {tag.end} ###
+
+- name: SIAM temp directory.
+  file:
+    path:  "{{ dir_siam_temp }}"
+    owner: "{{ siam_common_user }}"
+    group: "{{ siam_common_group }}"
+    mode:  "u=rwx,g=rwx,o=rx"
+    state: directory
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: Download service jar.
+  get_url:
+    url:   "{{ url_dl_art }}"
+    dest:  "{{ dir_siam_temp }}/{{ app_name_file }}"
+    owner: "{{ siam_common_user }}"
+    group: "{{ siam_common_group }}"
+    mode:  "u=rw,g=rw,o=rw"
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: Create SIAM data directories.
+  file:
+    path:  "{{ dir_common_data }}/{{ item.d }}"
+    owner: "{{ siam_common_user }}"
+    group: "{{ siam_common_group }}"
+    mode:  "u=rwx,g=rwx,o=rx"
+    state: directory
+  become: yes
+  become_user: "{{ siam_become_user }}"
+  with_items:
+    - { d: "pipeline" }
+    - { d: "pipeline/{{ siam_app_name }}" }
+    - { d: "pipeline/{{ siam_app_name }}/config" }
+    - { d: "logs" }
+    - { d: "logs/{{ siam_app_name }}" }
+
+- name: Create SIAM applications directory.
+  file:
+    path:  "{{ dir_common_apps }}/{{ item.d }}"
+    owner: "{{ siam_common_user }}"
+    group: "{{ siam_common_group }}"
+    mode:  "u=rwx,g=rwx,o=rx"
+    state: directory
+  become: yes
+  become_user: "{{ siam_become_user }}"
+  with_items:
+    - { d: "bin" }
+    - { d: "bin/{{ siam_app_name }}" }
+
+- name: Stop service.
+  command: "sudo -u appadm sudo /etc/init.d/{{ siam_app_name }} stop"
+  ignore_errors: yes
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: Deploy executable.
+  copy:
+    src:    "{{ dir_siam_temp }}/{{ app_name_file }}"
+    dest:   "{{ dir_common_apps }}/bin/{{ siam_app_name }}/{{ siam_app_name }}.jar"
+    owner:  "{{ siam_common_user }}"
+    group:  "{{ siam_common_group }}"
+    mode:   "u=rwx,g=rwx,o=rx"
+    remote_src: yes
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: Deploy startup script.
+  copy:
+    src:    "start-app.sh"
+    dest:   "{{ dir_common_apps }}/bin/{{ siam_app_name }}/start-app.sh"
+    owner:  "{{ siam_common_user }}"
+    group:  "{{ siam_common_group }}"
+    mode:   "u=rwx,g=rwx,o=rx"
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: Deploy startup options.
+  template:
+    src:    "start-opts.sh.j2"
+    dest:   "{{ dir_common_apps }}/bin/{{ siam_app_name }}/start-opts.sh"
+    owner:  "{{ siam_common_user }}"
+    group:  "{{ siam_common_group }}"
+    mode:   "u=rwx,g=rwx,o=rx"
+  become: yes
+  become_user: "{{ siam_become_user }}"
+ 
+- name: Deploy configuration files.
+  copy:
+    src:    "{{ dir_pipeline }}/{{ deploy_environment }}/{{ item.f }}"
+    dest:   "{{ dir_common_data }}/pipeline/{{ siam_app_name }}/config/{{ item.f }}"
+    owner:  "{{ siam_common_user }}"
+    group:  "{{ siam_common_group }}"
+    mode:   "u=rwx,g=rwx,o=rx"
+  with_items:
+    - { f: "custom.properties" }
+    - { f: "custom.yml" }
+    - { f: "logback.xml" }
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: Deploy init script.
+  copy:
+    src:    "init.sh"
+    dest:   "{{ dir_siam_temp }}/{{ siam_app_name }}"
+    owner:  "{{ siam_common_user }}"
+    group:  "{{ siam_common_group }}"
+    mode:   "u=rwx,g=rwx,o=rx"
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: Install init script.
+  command: "sudo -u appadm sudo cp -f {{ dir_siam_temp }}/{{ siam_app_name }} /etc/init.d/{{ siam_app_name }}"
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: Start service.
+  command: "sudo -u appadm sudo /etc/init.d/{{ siam_app_name }} start"
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: Install service.
+  command: "sudo -u appadm sudo /sbin/chkconfig --add {{ siam_app_name }}"
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+- name: Enable service.
+  command: "sudo -u appadm sudo /sbin/chkconfig {{ siam_app_name }} on"
+  become: yes
+  become_user: "{{ siam_become_user }}"
+
+# ------------------------------------------------------------------------------
+# END OF SCRIPT.
+# ------------------------------------------------------------------------------
+#
+

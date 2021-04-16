@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "siam.question-set.name.default",
+    "type": "java.lang.String",
+    "description": "A description for 'siam.question-set.name.default'"
+  },
+  {
+    "name": "siam.question.encryption.default",
+    "type": "java.lang.String",
+    "description": "A description for 'siam.question.encryption.default'"
+  },
+  {
+    "name": "siam.search.max-size",
+    "type": "java.lang.String",
+    "description": "A description for 'siam.search.max-size'"
+  }
+]}

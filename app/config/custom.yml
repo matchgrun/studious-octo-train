@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url:  ""
+    username: ""
+    password: ""
+    continue-on-error: true
+
+siam:
+  question-set:
+    name:
+      default: "DefaultSet"
+  question:
+    encryption:
+      default: "LEGACY"
+  search:
+    max-size: 20
+
+server:
+  port: 8980
+
+# logging:
+#   config: "/data/config/logback.xml"
+
+
