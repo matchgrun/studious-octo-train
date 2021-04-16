@@ -13,7 +13,7 @@
   <groupId>com.ibm.wh.siam</groupId>
   <artifactId>studious-octo-train</artifactId>
   <version>${build.version}</version>
-  <name>siam-msv-core</name>
+  <name>studious-octo-train</name>
   <description>Postgres POC for Spring Boot</description>
 
   <properties>
