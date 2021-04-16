@@ -1,6 +1,9 @@
-# siam-msv-core
+# studious-octo-train
 
-This repository contains the code for the SIAM Core Microservices project.
+This repository contains the code for a sample project to test toolchain.
+Note that running web services will need changes made to the following file(s):
+* application.yml
+* custom.yml
 
 ## Build
 
