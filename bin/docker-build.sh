@@ -58,7 +58,7 @@ function setup_config {
   map_build_cfg['dir_app_docker']=${dir_app_base}/docker
   map_build_cfg['dir_app_build']=${dir_app_base}/docker/app/build
 
-  map_build_cfg['app_name']='siam-msv-core'
+  map_build_cfg['app_name']='studious-octo-train'
  
   map_build_cfg['version_app']='1.0.0'
  
@@ -91,6 +91,7 @@ function build_app {
 function setup_docker_artifacts {
   local name_art=${map_build_cfg['app_name']}-${map_build_cfg['version_app']}.jar
   local name_target=${map_build_cfg['app_name']}.jar
+  local path_config=''
 
   cp ${map_build_cfg['dir_app_home']}/target/${name_art} \
     ${map_build_cfg['dir_app_build']}/${name_target}
@@ -104,6 +105,11 @@ function setup_docker_artifacts {
   cp ${map_build_cfg['dir_app_docker']}/app/src/*.xml \
     ${map_build_cfg['dir_app_build']}
 
+  path_config=${map_build_cfg['dir_app_base']}/private/application-cloud.yml
+  if [ -f ${path_config} ]; then
+    cp ${path_config} \
+    ${map_build_cfg['dir_app_build']}/custom.yml
+  fi
 }
 
 function build_docker_image {
@@ -131,7 +137,7 @@ cd ${dir_script}
 cd ..
 dir_home=$(pwd)
 
-setup_config ${dir_home}
+setup_config ${dir_home} ${dir_root}
 
 echo "${map_build_cfg['deco_line1']}"
 echo "script_name          [${0##*/}]"

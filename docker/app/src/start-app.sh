@@ -2,7 +2,7 @@
 ########################################################## {tag.top} ###
 ## IBM Confidential
 ## OCO Source Materials
-## *** siam-msv-core ***
+## *** studious-octo-train ***
 ##
 ## (C) Copyright IBM Corporation 2021  
 ##
@@ -26,7 +26,7 @@
 dir_script="$( cd "$( dirname "$0" )" && pwd )"
 cd ${dir_script}
 
-app_name=siam-msv-core
+app_name=studious-octo-train
 app_user='appadm'
 app_config='custom.yml'
 jdk_version='11.0.10'

@@ -1,5 +1,5 @@
 # Base image
-FROM fedora
+FROM centos
 
 # Set the working directory to /work
 WORKDIR /work
@@ -8,7 +8,7 @@ WORKDIR /work
 COPY ./work /work
 
 # Install software
-RUN yum install --assumeyes procps openssh openssh-clients net-tools nc wget git bash-completion zip ansible
+RUN yum install --assumeyes sudo procps openssh openssh-clients net-tools nc wget git bash-completion zip
 
 # Create a users
 ENV DOCKER_USER="developer" DOCKER_GROUP="developer" APP_USER="appadm" APP_NAME="siam-msv-core"
@@ -20,7 +20,7 @@ RUN echo "%${DOCKER_USER} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${DOCKER_USER
 RUN echo "%${APP_USER} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${APP_USER}
 
 # Install additional SIAM software
-RUN /work/setup-base-image.sh ${DOCKER_USER} ${DOCKER_GROUP}
+RUN /work/conf/setup-base-image.sh ${DOCKER_USER} ${DOCKER_GROUP}
 
 RUN chown -R ${DOCKER_USER}:${DOCKER_GROUP} /work
 
