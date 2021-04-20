@@ -28,6 +28,9 @@ cp /work/start-app.sh /applications/bin/start-app.sh
 cp /work/*.yml  /data/config
 cp /work/*.xml  /data/config
 
+# Cleanup
+rm -f /work/${arg_app}.jar
+
 echo ''
 echo "Done."
 echo ''

@@ -11,7 +11,7 @@ COPY ./work /work
 RUN yum install --assumeyes sudo procps openssh openssh-clients net-tools nc wget git bash-completion zip
 
 # Create a users
-ENV DOCKER_USER="developer" DOCKER_GROUP="developer" APP_USER="appadm" APP_NAME="siam-msv-core"
+ENV DOCKER_USER="developer" DOCKER_GROUP="developer" APP_USER="appadm" APP_NAME="siam-sot-base"
 
 RUN adduser  "${DOCKER_USER}"
 RUN adduser  "${APP_USER}"
