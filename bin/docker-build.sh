@@ -15,7 +15,7 @@ declare -A map_build_cfg
 
 # Dump configuration.
 # Args:
-#   ${1} Work download directory.
+#   ${1} Config directory.
 #
 function dump_config {
   local dir_config=${1}
@@ -44,6 +44,7 @@ function dump_config {
 
 function setup_config {
   local dir_app_base=${1}
+  local name_img=${2}
   local deco_line1='-------------------------------------------'
   local deco_line2='==========================================='
   local deco_line3='~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
@@ -59,6 +60,7 @@ function setup_config {
   map_build_cfg['dir_app_build']=${dir_app_base}/docker/app/build
 
   map_build_cfg['app_name']='studious-octo-train'
+  map_build_cfg['image_name']=${name_img}
  
   map_build_cfg['version_app']='1.0.0'
  
@@ -93,16 +95,19 @@ function setup_docker_artifacts {
   local name_target=${map_build_cfg['app_name']}.jar
   local path_config=''
 
+  rm -rf ${map_build_cfg['dir_app_build']}
+  mkdir -p ${map_build_cfg['dir_app_build']}
+
   cp ${map_build_cfg['dir_app_home']}/target/${name_art} \
     ${map_build_cfg['dir_app_build']}/${name_target}
 
   cp ${map_build_cfg['dir_app_docker']}/app/src/*.sh \
     ${map_build_cfg['dir_app_build']}
 
-  cp ${map_build_cfg['dir_app_docker']}/app/src/*.yml \
+  cp ${map_build_cfg['dir_app_base']}/app/config/*.yml \
     ${map_build_cfg['dir_app_build']}
 
-  cp ${map_build_cfg['dir_app_docker']}/app/src/*.xml \
+  cp ${map_build_cfg['dir_app_base']}/app/config/*.xml \
     ${map_build_cfg['dir_app_build']}
 
   path_config=${map_build_cfg['dir_app_base']}/private/application-cloud.yml
@@ -114,7 +119,7 @@ function setup_docker_artifacts {
 
 function build_docker_image {
   local dir_curr=$(pwd)
-  local name_image=${map_build_cfg['app_name']}
+  local name_image=${map_build_cfg['image_name']}
 
   cd ${map_build_cfg['dir_app_docker']}/app
   pwd
@@ -137,7 +142,13 @@ cd ${dir_script}
 cd ..
 dir_home=$(pwd)
 
-setup_config ${dir_home} ${dir_root}
+name_docker_img=${1}
+if [ "${name_docker_img}" == '' ]; then
+  echo "Image name must be supplied."
+  exit 1
+fi
+
+setup_config ${dir_home} ${name_docker_img}
 
 echo "${map_build_cfg['deco_line1']}"
 echo "script_name          [${0##*/}]"

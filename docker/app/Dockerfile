@@ -7,9 +7,6 @@ WORKDIR /work
 # Create directory structures
 COPY ./build/*  /work
 
-# Install software
-# RUN yum install --assumeyes procps openssh openssh-clients net-tools nc wget git bash-completion zip ansible
-
 # Create a user for runtime
 ENV DOCKER_USER="developer" DOCKER_GROUP="developer" APP_NAME="studious-octo-train" APP_USER="appadm"
 
@@ -22,5 +19,8 @@ RUN sudo chown -R ${DOCKER_USER}:${DOCKER_GROUP} /work
 USER "${DOCKER_USER}"
 
 WORKDIR /home/${DOCKER_USER}
+
+# Entry point
+# CMD "/applications/bin/start-app.sh
 
 
